@@ -1,0 +1,68 @@
+// schema.prisma — defines our database tables
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── User table ────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String                        // stored as bcrypt hash
+  avatar    String?                       // optional profile picture URL
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  watchlist Watchlist[]
+  favorites Favorite[]
+}
+
+// ─── Watchlist table ───────────────────────────────────────
+model Watchlist {
+  id         String      @id @default(cuid())
+  userId     String
+  animeId    Int                           // ID from Jikan API
+  animeTitle String
+  animeCover String?
+  status     WatchStatus @default(PLANNING)
+  progress   Int         @default(0)      // episodes watched so far
+  createdAt  DateTime    @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, animeId])             // one entry per anime per user
+}
+
+// ─── Favorites table ───────────────────────────────────────
+model Favorite {
+  id         String       @id @default(cuid())
+  userId     String
+  animeId    Int
+  animeTitle String
+  animeCover String?
+  type       FavoriteType @default(ANIME)
+  createdAt  DateTime     @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, animeId, type])
+}
+
+// ─── Enums ─────────────────────────────────────────────────
+enum WatchStatus {
+  WATCHING
+  COMPLETED
+  ON_HOLD
+  DROPPED
+  PLANNING
+}
+
+enum FavoriteType {
+  ANIME
+  MANGA
+}
