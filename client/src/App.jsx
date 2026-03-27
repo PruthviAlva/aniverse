@@ -1,11 +1,8 @@
+// App.jsx — Root component, hands off control to the router
+import AppRouter from "./router/AppRouter";
+
 function App() {
-  return (
-    <div className="min-h-screen bg-anime-bg text-anime-text flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-anime-primary">
-        🎌 AniVerse is alive!
-      </h1>
-    </div>
-  )
+  return <AppRouter />;
 }
 
 export default App
