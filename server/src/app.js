@@ -1,12 +1,14 @@
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
 
 // Load environment variables from .env file
-dotenv.config();
+require("dotenv").config();
+
+const authRoutes = require("./routes/authRoutes.js");
+
 
 const app = express();
 
@@ -48,6 +50,8 @@ app.get("/api/health", (req, res) => {
     });
 });
 
+app.use("/api/auth", authRoutes);
+
 // ─── 404 Handler ──────────────────────────────────────────
 app.use((req, res) => {
     res.status(404).json({ error: "Route not found" });
@@ -62,4 +66,4 @@ app.use((err, req, res, next) => {
     });
 });
 
-export default app;
+module.exports = app;

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Tv, Search, Heart, LogIn } from "lucide-react";
 
+import { useAuth } from "../../context/AuthContext";
+
 // Navigation links config — easy to add more later
 const NAV_LINKS = [
   { label: "Home", path: "/" },
@@ -12,6 +14,8 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
+
   // Controls mobile menu open/close
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -55,7 +59,6 @@ const Navbar = () => {
 
           {/* ── Desktop Right Actions ────────────────────────── */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Search icon button */}
             <Link
               to="/search"
               className="p-2 text-anime-muted hover:text-anime-primary transition-colors"
@@ -63,7 +66,6 @@ const Navbar = () => {
               <Search size={20} />
             </Link>
 
-            {/* Favorites icon button */}
             <Link
               to="/watchlist"
               className="p-2 text-anime-muted hover:text-anime-primary transition-colors"
@@ -71,15 +73,37 @@ const Navbar = () => {
               <Heart size={20} />
             </Link>
 
-            {/* Login button */}
-            <Link
-              to="/login"
-              className="flex items-center gap-2 bg-anime-primary hover:bg-orange-600
-                         text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-            >
-              <LogIn size={16} />
-              Login
-            </Link>
+            {user ? (
+              // Logged in — show username + logout
+              <div className="flex items-center gap-3">
+                <span className="text-anime-muted text-sm">
+                  Hi,{" "}
+                  <span className="text-anime-primary font-semibold">
+                    {user.username}
+                  </span>
+                </span>
+                <button
+                  onClick={logout}
+                  className="text-sm font-medium px-3 py-1.5 rounded-lg
+                             border border-anime-border text-anime-muted
+                             hover:border-anime-primary hover:text-anime-primary
+                             transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              // Logged out — show login button
+              <Link
+                to="/login"
+                className="flex items-center gap-2 bg-anime-primary hover:bg-orange-600
+                 text-white text-sm font-medium px-4 py-2 rounded-lg
+                 transition-colors"
+              >
+                <LogIn size={16} />
+                Login
+              </Link>
+            )}
           </div>
 
           {/* ── Mobile Hamburger Button ──────────────────────── */}
@@ -132,7 +156,6 @@ const Navbar = () => {
           </div>
         </div>
       )}
-
     </nav>
   );
 };

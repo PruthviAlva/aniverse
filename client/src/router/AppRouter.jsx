@@ -8,6 +8,11 @@ import Navbar from "../components/layout/Navbar";
 import Home from "../pages/Home";
 import Search from "../pages/Search";
 import AnimeDetails from "../pages/AnimeDetails";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+
+// Protected route wrapper
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter = () => {
   return (
@@ -18,10 +23,25 @@ const AppRouter = () => {
       {/* Main content area — each route swaps the page component */}
       <main className="min-h-screen bg-anime-bg">
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/anime/:id" element={<AnimeDetails />} />
-          {/* We'll add more routes as we build each page */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Protected routes — login required */}
+          <Route
+            path="/watchlist"
+            element={
+              <ProtectedRoute>
+                {/* Watchlist page coming in Phase 5 */}
+                <div className="p-8 text-anime-text">
+                  Watchlist coming soon!
+                </div>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </BrowserRouter>
