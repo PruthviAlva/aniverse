@@ -6,6 +6,8 @@ import Navbar from "../components/layout/Navbar";
 
 // Pages
 import Home from "../pages/Home";
+import Anime from "../pages/Anime";
+import Manga from "../pages/Manga";
 import Search from "../pages/Search";
 import AnimeDetails from "../pages/AnimeDetails";
 import Login from "../pages/Login";
@@ -26,6 +28,8 @@ const AppRouter = () => {
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<Home />} />
+          <Route path="/anime" element={<Anime />} />
+          <Route path="/manga" element={<Manga />} />
           <Route path="/search" element={<Search />} />
           <Route path="/anime/:id" element={<AnimeDetails />} />
           <Route path="/login" element={<Login />} />

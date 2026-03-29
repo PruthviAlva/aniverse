@@ -5,7 +5,7 @@ const BASE_URL = "https://api.jikan.moe/v4";
 
 // ─── Helper ────────────────────────────────────────────────
 // Central fetch function — handles errors in one place
-const fetcher = async (endpoint) => {
+export const fetcher = async (endpoint) => {
     const response = await fetch(`${BASE_URL}${endpoint}`);
 
     if (!response.ok) {
