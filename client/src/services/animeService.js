@@ -40,3 +40,12 @@ export const searchAnime = (query) =>
 // Get top manga
 export const getTopManga = () =>
     fetcher("/top/manga?limit=12");
+
+// ─── Manga Endpoints ───────────────────────────────────────
+// Get a single manga by its MAL ID
+export const getMangaById = (id) =>
+    fetcher(`/manga/${id}/full`);
+
+// Get manga characters
+export const getMangaCharacters = (id) =>
+    fetcher(`/manga/${id}/characters`);

@@ -15,14 +15,19 @@ const FILTERS = [
   { label: "🎞️ OVAs", endpoint: "/top/anime?type=ova" },
 ];
 
+// Safely builds URL — adds ? or & depending on existing params
+const buildUrl = (endpoint, page, limit = 24) => {
+  const separator = endpoint.includes("?") ? "&" : "?";
+  return `${endpoint}${separator}limit=${limit}&page=${page}`;
+};
+
 const Anime = () => {
   const [activeFilter, setActiveFilter] = useState(0);
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["anime-browse", activeFilter, page],
-    queryFn: () =>
-      fetcher(`${FILTERS[activeFilter].endpoint}&limit=24&page=${page}`),
+    queryFn: () => fetcher(buildUrl(FILTERS[activeFilter].endpoint, page)),
     staleTime: 1000 * 60 * 5,
     // Keep previous data visible while next page loads
     keepPreviousData: true,

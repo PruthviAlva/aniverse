@@ -13,14 +13,18 @@ const FILTERS = [
   { label: "🔥 Publishing", endpoint: "/top/manga?filter=publishing" },
 ];
 
+const buildUrl = (endpoint, page, limit = 24) => {
+  const separator = endpoint.includes("?") ? "&" : "?";
+  return `${endpoint}${separator}limit=${limit}&page=${page}`;
+};
+
 const Manga = () => {
   const [activeFilter, setActiveFilter] = useState(0);
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["manga-browse", activeFilter, page],
-    queryFn: () =>
-      fetcher(`${FILTERS[activeFilter].endpoint}&limit=24&page=${page}`),
+    queryFn: () => fetcher(buildUrl(FILTERS[activeFilter].endpoint, page)),
     staleTime: 1000 * 60 * 5,
     keepPreviousData: true,
   });

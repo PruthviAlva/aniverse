@@ -10,6 +10,7 @@ import Anime from "../pages/Anime";
 import Manga from "../pages/Manga";
 import Search from "../pages/Search";
 import AnimeDetails from "../pages/AnimeDetails";
+import MangaDetails from "../pages/MangaDetails";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Watchlist from "../pages/Watchlist";
@@ -32,6 +33,7 @@ const AppRouter = () => {
           <Route path="/manga" element={<Manga />} />
           <Route path="/search" element={<Search />} />
           <Route path="/anime/:id" element={<AnimeDetails />} />
+          <Route path="/manga/:id" element={<MangaDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 

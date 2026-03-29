@@ -7,6 +7,8 @@ import {
     getAnimeById,
     searchAnime,
     getTopManga,
+    getMangaById,
+    getMangaCharacters
 } from "../services/animeService";
 
 // ─── Hook: Trending Anime ──────────────────────────────────
@@ -61,5 +63,23 @@ export const useTopManga = () => {
         queryKey: ["top-manga"],
         queryFn: getTopManga,
         staleTime: 1000 * 60 * 10,
+    });
+};
+
+// ─── Hook: Single Manga Details ───────────────────────────
+export const useMangaById = (id) => {
+    return useQuery({
+        queryKey: ["manga", id],
+        queryFn: () => getMangaById(id),
+        enabled: !!id,
+    });
+};
+
+// ─── Hook: Manga Characters ───────────────────────────────
+export const useMangaCharacters = (id) => {
+    return useQuery({
+        queryKey: ["manga-characters", id],
+        queryFn: () => getMangaCharacters(id),
+        enabled: !!id,
     });
 };
