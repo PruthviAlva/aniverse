@@ -1,4 +1,4 @@
-// AnimeDetails.jsx — Full detail page for a single anime
+// AnimeDetails.jsx — Full detail page for a single
 import { useParams, Link } from "react-router-dom";
 import {
   Star,
@@ -8,11 +8,10 @@ import {
   ArrowLeft,
   Users,
   Award,
-  Plus,
-  Play,
 } from "lucide-react";
 import { useAnimeById } from "../hooks/useAnime";
 import Badge from "../components/common/Badge";
+import WatchlistButtons from "../components/anime/WatchlistButtons";
 
 // ─── Small stat card used in the info grid ─────────────────
 const StatCard = ({ icon: Icon, label, value }) => (
@@ -184,31 +183,7 @@ const AnimeDetails = () => {
             )}
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3 mt-2">
-              <button
-                className="flex items-center gap-2 bg-anime-primary
-                                 hover:bg-orange-600 text-white font-semibold
-                                 px-6 py-3 rounded-lg transition-colors"
-              >
-                <Plus size={18} />
-                Add to Watchlist
-              </button>
-
-              {trailer?.url && (
-                <a
-                  href={trailer?.embed_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 bg-anime-card
-                             hover:bg-anime-border text-anime-text font-semibold
-                             px-6 py-3 rounded-lg border border-anime-border
-                             transition-colors"
-                >
-                  <Play size={18} />
-                  Watch Trailer
-                </a>
-              )}
-            </div>
+            <WatchlistButtons anime={anime} />
           </div>
         </div>
 

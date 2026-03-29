@@ -10,6 +10,7 @@ import Search from "../pages/Search";
 import AnimeDetails from "../pages/AnimeDetails";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Watchlist from "../pages/Watchlist";
 
 // Protected route wrapper
 import ProtectedRoute from "./ProtectedRoute";
@@ -35,10 +36,7 @@ const AppRouter = () => {
             path="/watchlist"
             element={
               <ProtectedRoute>
-                {/* Watchlist page coming in Phase 5 */}
-                <div className="p-8 text-anime-text">
-                  Watchlist coming soon!
-                </div>
+                <Watchlist />
               </ProtectedRoute>
             }
           />
