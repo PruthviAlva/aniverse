@@ -1,5 +1,5 @@
 // authService.js — All auth API calls to our Express backend
-const BASE_URL = "http://localhost:5000/api/auth";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/auth`;
 
 // ─── Helper: get token from localStorage ───────────────────
 const getToken = () => localStorage.getItem("aniverse_token");

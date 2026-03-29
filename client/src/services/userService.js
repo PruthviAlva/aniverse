@@ -1,5 +1,5 @@
 // userService.js — Watchlist and Favorites API calls
-const BASE_URL = "http://localhost:5000/api/user";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/user`;
 
 // Helper — always attach the auth token
 const authHeaders = () => ({
