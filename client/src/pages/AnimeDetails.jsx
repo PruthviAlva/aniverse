@@ -9,15 +9,25 @@ import {
   Users,
   Award,
 } from "lucide-react";
+import { useRef } from "react";
 import { useAnimeById } from "../hooks/useAnime";
 import Badge from "../components/common/Badge";
 import WatchlistButtons from "../components/anime/WatchlistButtons";
+import YoutubePlayer from "../components/anime/YoutubePlayer";
 
 // ─── Small stat card used in the info grid ─────────────────
-const StatCard = ({ icon: Icon, label, value }) => (
+// StatCard — now supports optional click handler
+const StatCard = ({ icon: Icon, label, value, onClick }) => (
   <div
-    className="flex flex-col items-center justify-center gap-1
-                  bg-anime-card border border-anime-border rounded-xl p-4 text-center"
+    onClick={onClick}
+    className={`flex flex-col items-center justify-center gap-1
+                bg-anime-card border border-anime-border rounded-xl p-4
+                text-center
+                ${
+                  onClick
+                    ? "cursor-pointer hover:border-anime-primary hover:bg-anime-primary/5 transition-colors"
+                    : ""
+                }`}
   >
     <Icon size={20} className="text-anime-primary" />
     <span className="text-anime-muted text-xs">{label}</span>
@@ -28,6 +38,13 @@ const StatCard = ({ icon: Icon, label, value }) => (
 );
 
 const AnimeDetails = () => {
+  // Ref to scroll to the episodes section
+  const episodesRef = useRef(null);
+
+  const scrollToEpisodes = () => {
+    episodesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   // Get the anime ID from the URL (/anime/:id)
   const { id } = useParams();
   const { data, isLoading, isError } = useAnimeById(id);
@@ -189,7 +206,12 @@ const AnimeDetails = () => {
 
         {/* ── Stats Grid ──────────────────────────────────── */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
-          <StatCard icon={Tv} label="Episodes" value={episodes} />
+          <StatCard
+            icon={Tv}
+            label="Episodes"
+            value={episodes}
+            onClick={episodes ? scrollToEpisodes : undefined} // only clickable if episodes exist
+          />
           <StatCard
             icon={Award}
             label="Rank"
@@ -214,6 +236,25 @@ const AnimeDetails = () => {
             </p>
           </section>
         )}
+
+        {/* ── Watch Episodes ──────────────────────────────────── */}
+        <section ref={episodesRef} className="mb-10">
+          {" "}
+          {/* ← add ref here */}
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-xl font-bold text-anime-text">
+              Watch Episodes
+            </h2>
+            <span
+              className="flex items-center gap-1 text-xs font-medium
+                     bg-green-500/10 text-green-400 border border-green-400/20
+                     px-2.5 py-1 rounded-full"
+            >
+              ✓ Official Muse Asia
+            </span>
+          </div>
+          <YoutubePlayer animeTitle={displayTitle} />
+        </section>
 
         {/* ── Trailer Embed ───────────────────────────────── */}
         {youtubeEmbed && (
