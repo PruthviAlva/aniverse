@@ -12,6 +12,8 @@ import {
   Heart,
   Layers,
 } from "lucide-react";
+import { useRef } from "react";
+import MangaChapterList from "../components/anime/MangaChapterList";
 import { useMangaById, useMangaCharacters } from "../hooks/useAnime";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -141,12 +143,28 @@ const MangaWatchlistButtons = ({ manga }) => {
         <Heart size={18} fill={isFavorited ? "currentColor" : "none"} />
         {isFavorited ? "Favorited" : "Favorite"}
       </button>
+
+      {/* Read Manga button */}
+      <Link
+        to={`/manga/${manga.mal_id}/read`}
+        className="flex items-center gap-2 bg-anime-purple hover:bg-purple-700
+             text-white font-semibold px-6 py-3 rounded-lg
+             transition-colors"
+      >
+        <BookOpen size={18} />
+        Read Manga
+      </Link>
     </div>
   );
 };
 
 // ─── Main Component ────────────────────────────────────────
 const MangaDetails = () => {
+  const chaptersRef = useRef(null);
+  const scrollToChapters = () => {
+    chaptersRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   const { id } = useParams();
   const { data, isLoading, isError } = useMangaById(id);
   const { data: charactersData } = useMangaCharacters(id);
@@ -322,7 +340,12 @@ const MangaDetails = () => {
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6
                         gap-3 mb-10"
         >
-          <StatCard icon={BookOpen} label="Chapters" value={chapters} />
+          <StatCard
+            icon={BookOpen}
+            label="Chapters"
+            value={chapters}
+            onClick={chapters ? scrollToChapters : undefined}
+          />
           <StatCard icon={Layers} label="Volumes" value={volumes} />
           <StatCard
             icon={Award}
@@ -398,6 +421,35 @@ const MangaDetails = () => {
             <p className="text-anime-muted text-sm">{published.string}</p>
           </section>
         )}
+
+        {/* ── Start Reading ───────────────────────────────────── */}
+        <section ref={chaptersRef} className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-anime-text">Start Reading</h2>
+            <Link
+              to={`/manga/${manga.mal_id}/read`}
+              className="flex items-center gap-2 text-sm text-anime-primary
+                 hover:underline font-medium"
+            >
+              Open Full Reader →
+            </Link>
+          </div>
+
+          {/* Mini chapter list preview */}
+          <div
+            className="bg-anime-card border border-anime-border
+                  rounded-xl overflow-hidden"
+          >
+            <MangaChapterList
+              mangaTitle={displayTitle}
+              onChapterSelect={(chapterId, chapterNum) => {
+                // Navigate to reader with chapter
+                window.location.href = `/manga/${manga.mal_id}/read`;
+              }}
+              activeChapterId={null}
+            />
+          </div>
+        </section>
       </div>
     </div>
   );

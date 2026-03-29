@@ -17,6 +17,7 @@ const MangaDetails = lazy(() => import("../pages/MangaDetails"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Watchlist = lazy(() => import("../pages/Watchlist"));
+const MangaReader = lazy(() => import("../pages/MangaReader"));
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 
@@ -50,6 +51,7 @@ const AppRouter = () => {
             <Route path="/manga/:id" element={<MangaDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/manga/:id/read" element={<MangaReader />} />
 
             {/* Protected routes — login required */}
             <Route
