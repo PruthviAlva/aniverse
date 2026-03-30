@@ -16,7 +16,7 @@ const MangaPageReader = ({ chapterId, chapterTitle }) => {
   const [pageIdx, setPageIdx] = useState(0);
   const [zoom, setZoom] = useState(100);
 
-  const { data, isLoading, isError } = useChapterPages(chapterId);
+  const { data, isLoading, isError, error } = useChapterPages(chapterId);
   const pages = data?.pages || [];
 
   // ── Loading ──────────────────────────────────────────────
@@ -33,15 +33,63 @@ const MangaPageReader = ({ chapterId, chapterTitle }) => {
   }
 
   // ── Error ────────────────────────────────────────────────
-  if (isError || pages.length === 0) {
+  // Replace the existing isError block with this:
+  if (isError) {
+    const isUnavailable = error?.message === "CHAPTER_UNAVAILABLE";
+
     return (
       <div
-        className="flex flex-col items-center justify-center
-                      gap-3 py-24 bg-black rounded-xl"
+        className="flex flex-col items-center justify-center gap-4
+                    bg-black rounded-xl py-24 px-8 text-center"
       >
-        <p className="text-anime-muted text-sm">
-          Failed to load pages. Please try again.
-        </p>
+        <BookOpen size={40} className="text-anime-muted" />
+
+        {isUnavailable ? (
+          <>
+            <div>
+              <p className="text-anime-text font-semibold mb-2">
+                Chapter Not Available
+              </p>
+              <p className="text-anime-muted text-sm max-w-md">
+                This chapter has been removed from MangaDex due to publisher
+                licensing (common for One Piece, Naruto, Dragon Ball). Try a
+                different chapter or read on an official platform.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <a
+                href="https://www.viz.com/shonenjump"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-anime-primary hover:bg-orange-600 text-white
+                         text-sm font-medium px-4 py-2 rounded-lg
+                         transition-colors"
+              >
+                Read on VIZ (Official)
+              </a>
+              <a
+                href="https://mangaplus.shueisha.co.jp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-anime-card border border-anime-border
+                         text-anime-text hover:border-anime-primary
+                         text-sm font-medium px-4 py-2 rounded-lg
+                         transition-colors"
+              >
+                Read on MANGA Plus (Free)
+              </a>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-anime-text font-semibold">
+              Failed to load pages
+            </p>
+            <p className="text-anime-muted text-sm">
+              Please try another chapter
+            </p>
+          </>
+        )}
       </div>
     );
   }
